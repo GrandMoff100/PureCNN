@@ -1,0 +1,24 @@
+[tool.pylint.messages_control]
+disable = [
+    "missing-class-docstring",
+    "missing-function-docstring",
+    "missing-module-docstring"
+]
+
+[tool.poetry]
+name = "purecnn"
+version = "0.1.0"
+description = "Implements a Convolutional Neural Network from scratch."
+authors = ["Nate <minecraftcrusher100@gmail.com>"]
+license = "GPLv3-or-later"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+numpy = "^1.23.1"
+pandas = "^1.4.3"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
