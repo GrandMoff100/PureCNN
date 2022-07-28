@@ -1,5 +1,3 @@
-import functools
-import operator
 from typing import Callable, Generator
 import numpy as np
 from numpy.typing import ArrayLike
@@ -22,7 +20,6 @@ def convolution_targets(
                     j : j + height - kernel.shape[1] : spline,
                 ]
             )
-            print(target)
             if pad is not None:
                 target = np.pad(
                     target,
@@ -39,13 +36,7 @@ def convolution(
     spline: int = 1,
 ) -> ArrayLike:
     """Perform a convolution with a kernel."""
-    return (
-        functools.reduce(
-            operator.add,
-            convolution_targets(arr, kernel, spline=spline, pad=pad),
-        )
-        / kernel.size
-    )
+    return convolution_targets(arr, kernel, spline=spline, pad=pad) / kernel.size
 
 
 def pool(
