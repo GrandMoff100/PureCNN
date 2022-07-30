@@ -1,7 +1,7 @@
-import pandas as pd
 import numpy as np
-from cnn.net import Network, ConvolutionalLayer, FCLayer, MaxPool, FlattenLayer
+import pandas as pd
 
+from cnn.net import ConvolutionalLayer, FCLayer, FlattenLayer, MaxPool, Network
 
 df = pd.read_csv("digits.csv", comment="#")
 
@@ -16,10 +16,10 @@ df["label"] = df["label"].apply(one_hot)
 data = df.drop(columns=["label"]).to_numpy()
 labels = df["label"].to_numpy()
 
+
 network = Network(
     [
-        FCLayer(784, 48),
-        FCLayer(48, 10),
+        FCLayer(784, 10),
     ]
 )
 

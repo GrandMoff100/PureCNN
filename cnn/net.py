@@ -1,7 +1,9 @@
-from collections import defaultdict
 import itertools
+from collections import defaultdict
+
 import numpy as np
-from cnn.func import convolution, pool, relu
+
+from cnn.func import convolution, pool, relu, relu_prime
 
 
 class Layer:
@@ -84,23 +86,20 @@ class FCLayer(LearningLayer):
 
     def previous_layer_gradient(
         self, inp: np.ndarray, out: np.ndarray, truth: np.ndarray
-    ):
-        return (
-            self.weights.sum(axis=1)
-            * np.maximum(0, inp @ self.weights + self.biases)
-            * (out - truth)
-        )
+    ) -> np.ndarray:
+        return self.weights.sum(axis=1) * relu_prime(self.weights @ inp + self.biases) * (out - truth)
 
-    def bias_gradient(self, inp: np.ndarray, out: np.ndarray, truth: np.ndarray):
-        return np.maximum(0, inp @ self.weights + self.biases) * (out - truth)
+    def bias_gradient(self, inp: np.ndarray, out: np.ndarray, truth: np.ndarray) -> np.ndarray:
+        return relu_prime(self.weights @ inp + self.biases) * (out - truth)
 
-    def weights_gradient(self, inp: np.ndarray, out: np.ndarray, truth: np.ndarray):
-        print(inp.shape, inp)
-        print(self.weights.shape, self.weights)
-        return inp * np.maximum(0, inp @ self.weights + self.biases) * (out - truth)
+    def weights_gradient(self, inp: np.ndarray, out: np.ndarray, truth: np.ndarray) -> np.ndarray:
+        return relu_prime(self.weights @ inp + self.biases) @ (out - truth) * self.weights
 
     def step(
-        self, weights: np.ndarray, biases: np.ndarray, batch_size: int, **kwargs
+        self,
+        weights: np.ndarray,
+        biases: np.ndarray,
+        batch_size: int,
     ) -> None:
         """Update the weights and biases of the network."""
         self.weights -= weights / batch_size

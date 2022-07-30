@@ -1,4 +1,5 @@
 from typing import Callable, Generator
+
 import numpy as np
 from numpy.typing import ArrayLike
 
@@ -60,3 +61,8 @@ def pool(
 def relu(x: ArrayLike | int) -> ArrayLike | int:
     """Declare a ReLU activation function to use."""
     return np.maximum(x, 0)
+
+
+def relu_prime(x: ArrayLike | int) -> ArrayLike | int:
+    """Declare a ReLU activation function derivative to use."""
+    return np.where(x > 0, 1, 0)
